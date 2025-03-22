@@ -1,258 +1,285 @@
 import pygame
 from random import randint
-import pygame as pygame
-from pygame import KEYDOWN, QUIT, K_r
-from pynput.mouse import Button, Listener
+import os
 
+# Inicializar o Pygame
 pygame.init()
 
-janela = pygame.display.set_mode((1200,800))
+# Obter a resolução do monitor do usuário
+info = pygame.display.Info()
+SCREEN_WIDTH = info.current_w
+SCREEN_HEIGHT = info.current_h
+
+# Definir a janela em tela cheia
+janela = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Score - Avião")
-BackGround = pygame.image.load(r'D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\BackGroud.jpg')
-Hub_BackGround = pygame.image.load(r'D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\HUB_BackGround.png')
-Morreu_tela = pygame.image.load(r"D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\Morreu.png")
-Tiro = pygame.image.load(r"D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\Tiro.png")
-TiroUp = pygame.image.load(r"D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\TiroUp.png")
-Tiro_Upgrade = pygame.image.load(r"D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\CompraTiro.png")
-Personagem = pygame.image.load(r'D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\Personagem.png')
-Inimigo =  pygame.image.load(r"D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\Inimigo.png")
-Inimigo1 = pygame.image.load(r"D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\Inimigo1.png")
-Inimigo2 = pygame.image.load(r"D:\MateriasAnotadasnoBlocodeNotas\MateriaPython\PythonPycharm\JogoDeAvião\GUI_HUB\inimigo2.png")
-#-----------------------------------------------VARIAVEIS GLOBAIS-------------------------------------------------------
-Jg_x = 400
-Jg_y = 400
-ini_x = 1300
-ini_y = 400
-ini1_x = 1500
-ini1_y = 550
-ini2_x = 1300
-ini2_y = randint(200,380)
-tiro_x = Jg_x
-tiro_y = Jg_y
+
+# Resolução base original do jogo
+ORIGINAL_WIDTH = 1200
+ORIGINAL_HEIGHT = 800
+
+# Calcular proporções de escala
+scale_x = SCREEN_WIDTH / ORIGINAL_WIDTH
+scale_y = SCREEN_HEIGHT / ORIGINAL_HEIGHT
+
+# Caminhos das imagens
+diretorio_atual = os.path.dirname(__file__)
+caminho_background = os.path.join(diretorio_atual, 'Imagens', 'BackGroud.jpg')
+caminho_hub_background = os.path.join(diretorio_atual, 'Imagens', 'HUB_BackGround.png')
+caminho_morreu_tela = os.path.join(diretorio_atual, 'Imagens', 'Morreu.png')
+caminho_tiro = os.path.join(diretorio_atual, 'Imagens', 'Tiro.png')
+caminho_tiro_up = os.path.join(diretorio_atual, 'Imagens', 'TiroUp.png')
+caminho_tiro_upgrade = os.path.join(diretorio_atual, 'Imagens', 'CompraTiro.png')
+caminho_personagem = os.path.join(diretorio_atual, 'Imagens', 'Personagem.png')
+caminho_inimigo = os.path.join(diretorio_atual, 'Imagens', 'Inimigo.png')
+caminho_inimigo1 = os.path.join(diretorio_atual, 'Imagens', 'Inimigo1.png')
+caminho_inimigo2 = os.path.join(diretorio_atual, 'Imagens', 'inimigo2.png')
+
+# Carregar e escalar as imagens
+BackGround = pygame.image.load(caminho_background)
+BackGround = pygame.transform.scale(BackGround, (SCREEN_WIDTH, SCREEN_HEIGHT))  # Cobrir toda a tela
+
+Hub_BackGround = pygame.image.load(caminho_hub_background)
+Hub_BackGround = pygame.transform.scale(Hub_BackGround, (int(Hub_BackGround.get_width() * scale_x), int(Hub_BackGround.get_height() * scale_y)))
+
+Morreu_tela = pygame.image.load(caminho_morreu_tela)
+Morreu_tela = pygame.transform.scale(Morreu_tela, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+Tiro = pygame.image.load(caminho_tiro)
+Tiro = pygame.transform.scale(Tiro, (int(Tiro.get_width() * scale_x), int(Tiro.get_height() * scale_y)))
+
+TiroUp = pygame.image.load(caminho_tiro_up)
+TiroUp = pygame.transform.scale(TiroUp, (int(TiroUp.get_width() * scale_x), int(TiroUp.get_height() * scale_y)))
+
+Tiro_Upgrade = pygame.image.load(caminho_tiro_upgrade)
+Tiro_Upgrade = pygame.transform.scale(Tiro_Upgrade, (int(Tiro_Upgrade.get_width() * scale_x), int(Tiro_Upgrade.get_height() * scale_y)))
+
+Personagem = pygame.image.load(caminho_personagem)
+Personagem = pygame.transform.scale(Personagem, (int(Personagem.get_width() * scale_x), int(Personagem.get_height() * scale_y)))
+
+Inimigo = pygame.image.load(caminho_inimigo)
+Inimigo = pygame.transform.scale(Inimigo, (int(Inimigo.get_width() * scale_x), int(Inimigo.get_height() * scale_y)))
+
+Inimigo1 = pygame.image.load(caminho_inimigo1)
+Inimigo1 = pygame.transform.scale(Inimigo1, (int(Inimigo1.get_width() * scale_x), int(Inimigo1.get_height() * scale_y)))
+
+Inimigo2 = pygame.image.load(caminho_inimigo2)
+Inimigo2 = pygame.transform.scale(Inimigo2, (int(Inimigo2.get_width() * scale_x), int(Inimigo2.get_height() * scale_y)))
+
+# Variáveis globais ajustadas
+Jg_x = int(400 * scale_x)
+Jg_y = int(400 * scale_y)
+ini_x = int(1300 * scale_x)
+ini_y = int(400 * scale_y)
+ini1_x = int(1500 * scale_x)
+ini1_y = int(550 * scale_y)
+ini2_x = int(1300 * scale_x)
+ini2_y = randint(int(200 * scale_y), int(380 * scale_y))
 vida = 0
 total_vida = 0
-pos_x = randint(300, 600)
-pos_y = randint(100,200)
 Money = 0
 Preço_Tiro = 5
 inimigos_mortos = 0
-velocidade_personagem = 15
-velocidade_inimigo = 15
-velocidade_tiro = 10
-
+velocidade_personagem = int(15 * scale_x)
+velocidade_inimigo = int(15 * scale_x)
+velocidade_tiro = int(10 * scale_x)
 morreu = False
-#-----------------------------------------------------FONTES------------------------------------------------------------
-font = pygame.font.SysFont('arial black', 30)
-texto = font.render("$: ",True,(0,255,0))
-pos_texto = texto.get_rect()
-pos_texto.center = (1080,15)
 
-font1 = pygame.font.SysFont('arial black', 25)
-valor = font.render("$: ",True,(0,0,0))
-pos_valor = valor.get_rect()
-pos_valor.center = (180,658)
+# Lista para armazenar os tiros (x, y)
+tiros = []
 
-font2 = pygame.font.SysFont('arial black', 20)
-valor_level = font.render("",True,(0,0,0))
-pos_valor_level = valor_level.get_rect()
-pos_valor_level.center = (120,706)
+# Fontes ajustadas
+font_size = int(30 * scale_y)
+font = pygame.font.SysFont('arial black', font_size)
 
-font2 = pygame.font.SysFont('arial black', 20)
-valor_levelprox = font.render("",True,(0,0,0))
-pos_valor_levelprox = valor_levelprox.get_rect()
-pos_valor_levelprox.center = (225,706)
+font1_size = int(25 * scale_y)
+font1 = pygame.font.SysFont('arial black', font1_size)
 
-font = pygame.font.SysFont('arial black', 30)
-vida_font = font.render("Vida: ", True,(255,0,0))
-pos_vida = vida_font.get_rect()
-pos_vida.center = (50,15)
+font2_size = int(20 * scale_y)
+font2 = pygame.font.SysFont('arial black', font2_size)
 
-font = pygame.font.SysFont('arial black', 30)
-score_font = font.render("Inimigos Mortos: ", True,(255,0,0))
-pos_score = score_font.get_rect()
-pos_score.center = (500,10)
+# Posições dos textos ajustadas
+pos_texto = pygame.Rect(0, 0, 0, 0)
+pos_texto.center = (int(1080 * scale_x), int(15 * scale_y))
 
-font3 = pygame.font.SysFont('arial black', 5)
-recado_font = font.render("MANTENHA O BOTÃO DO MOUSE PRESSIONADO",True,(0,0,0))
-pos_recado = recado_font.get_rect()
-pos_recado.center = (700,650)
+pos_valor = pygame.Rect(0, 0, 0, 0)
+pos_valor.center = (int(180 * scale_x), int(658 * scale_y))
 
-font = pygame.font.SysFont('arial black', 30)
-recado1_font = font.render("PARA QUE O DISPARO CONTINUEI.",True,(0,0,0))
-pos_recado1 = recado1_font.get_rect()
-pos_recado1.center = (700,680)
-#-------------------------------------------------FUNÇÕES---------------------------------------------------------------
+pos_valor_level = pygame.Rect(0, 0, 0, 0)
+pos_valor_level.center = (int(120 * scale_x), int(706 * scale_y))
+
+pos_valor_levelprox = pygame.Rect(0, 0, 0, 0)
+pos_valor_levelprox.center = (int(225 * scale_x), int(706 * scale_y))
+
+pos_vida = pygame.Rect(0, 0, 0, 0)
+pos_vida.center = (int(50 * scale_x), int(15 * scale_y))
+
+pos_score = pygame.Rect(0, 0, 0, 0)
+pos_score.center = (int(500 * scale_x), int(10 * scale_y))
+
+pos_recado = pygame.Rect(0, 0, 0, 0)
+pos_recado.center = (int(700 * scale_x), int(650 * scale_y))
+
+pos_recado1 = pygame.Rect(0, 0, 0, 0)
+pos_recado1.center = (int(700 * scale_x), int(680 * scale_y))
+
+# Funções
 def reiniciar_jogo():
-    global Money, Preço_Tiro, velocidade_tiro, velocidade_personagem, velocidade_inimigo, Jg_y, Jg_x, ini_y, ini_x, ini1_y,ini1_x,morreu,ini2_x,ini2_y,vida,total_vida, inimigos_mortos
+    global Money, Preço_Tiro, velocidade_tiro, velocidade_personagem, velocidade_inimigo, Jg_y, Jg_x, ini_y, ini_x, ini1_y, ini1_x, morreu, ini2_x, ini2_y, vida, total_vida, inimigos_mortos, tiros
     Money = 0
     Preço_Tiro = 5
-    velocidade_tiro = 10
-    velocidade_personagem = 15
-    velocidade_inimigo = 5
-    Jg_x = 400
-    Jg_y = 400
-    ini_x = 1300
-    ini_y = 400
-    ini1_x = 1500
-    ini1_y = 550
-    ini2_x = 1300
-    ini2_y = 400
+    velocidade_tiro = int(10 * scale_x)
+    velocidade_personagem = int(15 * scale_x)
+    velocidade_inimigo = int(5 * scale_x)
+    Jg_x = int(400 * scale_x)
+    Jg_y = int(400 * scale_y)
+    ini_x = int(1300 * scale_x)
+    ini_y = int(400 * scale_y)
+    ini1_x = int(1500 * scale_x)
+    ini1_y = int(550 * scale_y)
+    ini2_x = int(1300 * scale_x)
+    ini2_y = int(400 * scale_y)
     vida = 0
     total_vida = 0
     inimigos_mortos = 0
+    tiros = []
     morreu = False
 
 def inimigos():
-    Inimigo_Tela = janela.blit(Inimigo, (ini_x, ini_y))
-def inimigos1():
-    Inimigo1_Tela = janela.blit(Inimigo1, (ini1_x, ini1_y))
+    janela.blit(Inimigo, (ini_x, ini_y))
 
-#-------------------------------------------------EVENTOS GLOBAIS-------------------------------------------------------
+def inimigos1():
+    janela.blit(Inimigo1, (ini1_x, ini1_y))
+
+# Loop principal
 janela_Aberta = True
 while janela_Aberta:
     pygame.time.delay(15)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             janela_Aberta = False
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Botão esquerdo do mouse
+            tiros.append([Jg_x, Jg_y])  # Adiciona um novo tiro na posição do personagem
 
     comandos = pygame.key.get_pressed()
     if comandos[pygame.K_w]:
-        if Jg_y < -60:
-            Jg_y = 550
-        Jg_y += - velocidade_personagem
+        if Jg_y < int(-60 * scale_y):
+            Jg_y = int(550 * scale_y)
+        Jg_y -= velocidade_personagem
     if comandos[pygame.K_s]:
-        if Jg_y > 550:
-            Jg_y = -60
-        Jg_y += + velocidade_personagem
+        if Jg_y > int(550 * scale_y):
+            Jg_y = int(-60 * scale_y)
+        Jg_y += velocidade_personagem
     if comandos[pygame.K_a] and Jg_x >= 0:
-        Jg_x += - velocidade_personagem
-    if comandos[pygame.K_d] and Jg_x <= 1100:
-        Jg_x += + velocidade_personagem
+        Jg_x -= velocidade_personagem
+    if comandos[pygame.K_d] and Jg_x <= int(1100 * scale_x):
+        Jg_x += velocidade_personagem
 
-    recado_font = font.render("MANTENHA O BOTÃO DO MOUSE PRESSIONADO", True, (0, 0, 0))
-    score_font = font.render("Naves Abatidas: "+str(inimigos_mortos), True, (255, 255, 255))
-    vida_font = font.render("Vida: "+str(total_vida), True, (255, 0, 0))
-    texto = font.render("$: " + str(Money), True, (0, 255, 0))
-    valor = font.render("$: " + str(Preço_Tiro), True, (0, 0, 0))
-    valor_level = font.render("" + str(velocidade_tiro), True, (0, 0, 0))
-    valor_levelprox = font.render("" + str(velocidade_tiro + 1), True, (0, 0, 0))
-    mx, my = pygame.mouse.get_pos()
-    print(mx,my)
-# -----------------------------------------------------------------------------------------------------------------------
+    # Movimentar inimigos
     ini_x -= velocidade_inimigo
     ini1_x -= velocidade_inimigo
-    botao = pygame.key.get_pressed()
-    if botao[pygame.K_SPACE]:
-            if Money >= Preço_Tiro:
-                Money -= Preço_Tiro
-                velocidade_tiro += 1
-                Preço_Tiro += randint(2, 3)
-                if velocidade_tiro == 40:
-                    velocidade_personagem += 5
-            else:
-                print("dinheiro insuficiente")
 
+    if ini_x < int(-150 * scale_x):
+        ini_x = randint(int(1300 * scale_x), int(1500 * scale_x))
+        ini_y = randint(int(70 * scale_y), int(200 * scale_y))
+    if ini1_x < int(-150 * scale_x):
+        ini1_x = randint(int(1600 * scale_x), int(1800 * scale_x))
+        ini1_y = randint(int(400 * scale_y), int(550 * scale_y))
 
-    if ini_x < -150:
-        ini_x = randint(1300, 1500)
-        ini_y = randint(70, 200)
-    if ini1_x < -150:
-        ini1_x = randint(1600, 1800)
-        ini1_y = randint(400, 550)
+    # Movimentar tiros
+    for tiro in tiros[:]:
+        tiro[0] += velocidade_tiro
+        if tiro[0] > SCREEN_WIDTH:
+            tiros.remove(tiro)
+
+    # Atualizar HUD
+    score_font = font.render("Naves Abatidas: " + str(inimigos_mortos), True, (255, 255, 255))
+    vida_font = font.render("Vida: " + str(total_vida), True, (255, 0, 0))
+    texto = font.render("$: " + str(Money), True, (0, 255, 0))
+    valor = font1.render("$: " + str(Preço_Tiro), True, (0, 0, 0))
+    valor_level = font2.render(str(velocidade_tiro), True, (0, 0, 0))
+    valor_levelprox = font2.render(str(velocidade_tiro + 1), True, (0, 0, 0))
+    recado_font = font.render("CLIQUE PARA DISPARAR", True, (0, 0, 0))
+
+    # Compra de upgrade
+    if comandos[pygame.K_SPACE]:
+        if Money >= Preço_Tiro:
+            Money -= Preço_Tiro
+            velocidade_tiro += int(1 * scale_x)
+            Preço_Tiro += randint(2, 3)
+            if velocidade_tiro >= int(40 * scale_x):
+                velocidade_personagem += int(5 * scale_x)
+        else:
+            print("dinheiro insuficiente")
+
+    # Desenhar na tela
     janela.blit(BackGround, (0, 0))
-    janela.blit(Hub_BackGround, (50, 600))
+    janela.blit(Hub_BackGround, (int(50 * scale_x), int(600 * scale_y)))
     janela.blit(texto, pos_texto)
     janela.blit(valor, pos_valor)
     janela.blit(vida_font, pos_vida)
-    janela.blit(recado_font,pos_recado)
-    janela.blit(recado1_font,pos_recado1)
+    janela.blit(recado_font, pos_recado)
     janela.blit(score_font, pos_score)
-    janela.blit(valor_level,pos_valor_level)
+    janela.blit(valor_level, pos_valor_level)
     janela.blit(valor_levelprox, pos_valor_levelprox)
     Personagem_Tela = janela.blit(Personagem, (Jg_x, Jg_y))
     inimigos()
     inimigos1()
-    Tiro_Upgrade1 = janela.blit(Tiro_Upgrade, (-50,450))
-    if ((Jg_x + 30 > ini_x and Jg_x - 30 < ini_x and Jg_y + 20 > ini_y and Jg_y - 20 < ini_y)):
+    janela.blit(Tiro_Upgrade, (int(-50 * scale_x), int(450 * scale_y)))
+
+    # Desenhar os tiros
+    for tiro in tiros:
+        janela.blit(Tiro, (tiro[0], tiro[1]))
+
+    # Verificar colisões com inimigos
+    offset_x = int(30 * scale_x)
+    offset_y = int(20 * scale_y)
+    tiro_offset_x = int(20 * scale_x)
+    tiro_offset_y1 = int(50 * scale_y)
+    tiro_offset_y2 = int(10 * scale_y)
+
+    for tiro in tiros[:]:
+        if (tiro[0] + tiro_offset_x > ini_x and tiro[1] + tiro_offset_y1 > ini_y and tiro[1] - tiro_offset_y2 < ini_y):
+            inimigos_mortos += 1
+            Money += randint(1, 6)
+            ini_x = randint(int(1300 * scale_x), int(1500 * scale_x))
+            ini_y = randint(int(70 * scale_y), int(380 * scale_y))
+            tiros.remove(tiro)
+        elif (tiro[0] + tiro_offset_x > ini1_x and tiro[1] + tiro_offset_y1 > ini1_y and tiro[1] - tiro_offset_y2 < ini1_y):
+            inimigos_mortos += 1
+            Money += randint(1, 6)
+            ini1_x = randint(int(1600 * scale_x), int(1800 * scale_x))
+            ini1_y = randint(int(400 * scale_y), int(550 * scale_y))
+            tiros.remove(tiro)
+            if inimigos_mortos in [10, 20, 30, 40]:
+                velocidade_inimigo += int(4 * scale_x) + (inimigos_mortos // 10) * int(2 * scale_x)
+
+    # Verificar colisão do personagem com inimigos
+    if (Jg_x + offset_x > ini_x and Jg_x - offset_x < ini_x and Jg_y + offset_y > ini_y and Jg_y - offset_y < ini_y) or \
+       (Jg_x + offset_x > ini1_x and Jg_x - offset_x < ini1_x and Jg_y + offset_y > ini1_y and Jg_y - offset_y < ini1_y):
         vida += 1
-        if vida == 8:
+        if vida >= 8:
             morreu = True
             while morreu:
                 for event in pygame.event.get():
-                    if event.type == QUIT:
+                    if event.type == pygame.QUIT:
                         pygame.quit()
                         exit()
-                    if event.type == KEYDOWN:
-                        if event.key == K_r:
-                            reiniciar_jogo()
-
-                janela.blit(Morreu_tela, (0,0))
-                pygame.display.update()
-
-    if ((Jg_x + 30 > ini1_x and Jg_x - 30 < ini1_x and Jg_y + 20 > ini1_y and Jg_y - 20 < ini1_y)):
-        vida += 1
-        if vida == 8:
-            morreu = True
-            while morreu:
-                for event in pygame.event.get():
-                    if event.type == QUIT:
-                        pygame.quit()
-                        exit()
-                    if event.type == KEYDOWN:
-                        if event.key == K_r:
-                            reiniciar_jogo()
-
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                        reiniciar_jogo()
                 janela.blit(Morreu_tela, (0, 0))
                 pygame.display.update()
-    mouse = pygame.mouse.get_pressed()[0]
-    if mouse:
-        B = janela.blit(Tiro, (tiro_x , tiro_y))
-        tiro_x += velocidade_tiro
 
-        if ((tiro_x + 20 > ini_x and tiro_y + 50 > ini_y and tiro_y - 10 < ini_y)):
-            inimigos_mortos += 1
-            Money += randint(1, 6)
-            texto = font.render("$: " + str(Money), True, (0, 255, 0))
-            ini_x = randint(1300, 1500)
-            ini_y = randint(70, 380)
-        if ((tiro_x + 20 > ini1_x and tiro_y + 50 > ini1_y and tiro_y - 10 < ini1_y)):
-            inimigos_mortos += 1
-            Money += randint(1, 6)
-            texto = font.render("$: " + str(Money), True, (0, 255, 0))
-            ini1_x = randint(1600, 1800)
-            ini1_y = randint(400, 550)
-            if inimigos_mortos == 10:
-                velocidade_inimigo += 4
-            if inimigos_mortos == 20:
-                velocidade_inimigo += 6
-            if inimigos_mortos == 30:
-                velocidade_inimigo += 8
-            if inimigos_mortos == 40:
-                velocidade_inimigo += 12
-    elif tiro_x > 1210:
-        tiro_x = Jg_x
-        tiro_y = Jg_y
-    else:
-        tiro_x = Jg_x
-        tiro_y = Jg_y
-
+    # Atualizar vida
     if vida < 3:
         total_vida = 3
     elif vida < 6:
         total_vida = 2
-    elif vida < 2:
+    elif vida < 8:
         total_vida = 1
     else:
         total_vida = 0
-    recado_font = font.render("MANTENHA O BOTÃO DO MOUSE PRESSIONADO", True, (0, 0, 0))
-    score_font = font.render("Naves Abatidas:"+str(inimigos_mortos), True, (255, 255, 255))
-    vida_font = font.render("Vida: "+str(total_vida), True, (255, 0, 0))
-    texto = font.render("$: " + str(Money), True, (0, 255, 0))
-    valor1 = font.render("$: " + str(Preço_Tiro),True,(0,0,0))
-    #-----------------------------------------------------------------------------------------------------------------------
-
 
     pygame.display.update()
-
 
 pygame.quit()
