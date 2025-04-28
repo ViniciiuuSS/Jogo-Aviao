@@ -2,6 +2,15 @@ import pygame
 from random import randint
 import os
 
+def resource_path(relative_path):
+    """ Pega o caminho correto, para .py e .exe """
+    try:
+        base_path = sys._MEIPASS  # Quando estiver rodando como .exe
+    except Exception:
+        base_path = os.path.abspath(".")  # Quando estiver rodando como .py
+    return os.path.join(base_path, relative_path)
+
+
 # Inicializar o Pygame
 pygame.init()
 
@@ -25,15 +34,16 @@ scale_y = SCREEN_HEIGHT / ORIGINAL_HEIGHT
 # Caminhos das imagens
 diretorio_atual = os.path.dirname(__file__)
 caminho_background = os.path.join(diretorio_atual, 'Imagens', 'BackGroud.jpg')
-caminho_hub_background = os.path.join(diretorio_atual, 'Imagens', 'HUB_BackGround.png')
-caminho_morreu_tela = os.path.join(diretorio_atual, 'Imagens', 'Morreu.png')
-caminho_tiro = os.path.join(diretorio_atual, 'Imagens', 'Tiro.png')
-caminho_tiro_up = os.path.join(diretorio_atual, 'Imagens', 'TiroUp.png')
-caminho_tiro_upgrade = os.path.join(diretorio_atual, 'Imagens', 'CompraTiro.png')
-caminho_personagem = os.path.join(diretorio_atual, 'Imagens', 'Personagem.png')
-caminho_inimigo = os.path.join(diretorio_atual, 'Imagens', 'Inimigo.png')
-caminho_inimigo1 = os.path.join(diretorio_atual, 'Imagens', 'Inimigo1.png')
-caminho_inimigo2 = os.path.join(diretorio_atual, 'Imagens', 'inimigo2.png')
+caminho_background = resource_path(os.path.join('Imagens', 'BackGroud.jpg'))
+caminho_hub_background = resource_path(os.path.join('Imagens', 'HUB_BackGround.png'))
+caminho_morreu_tela = resource_path(os.path.join('Imagens', 'Morreu.png'))
+caminho_tiro = resource_path(os.path.join('Imagens', 'Tiro.png'))
+caminho_tiro_up = resource_path(os.path.join('Imagens', 'TiroUp.png'))
+caminho_tiro_upgrade = resource_path(os.path.join('Imagens', 'CompraTiro.png'))
+caminho_personagem = resource_path(os.path.join('Imagens', 'Personagem.png'))
+caminho_inimigo = resource_path(os.path.join('Imagens', 'Inimigo.png'))
+caminho_inimigo1 = resource_path(os.path.join('Imagens', 'Inimigo1.png'))
+caminho_inimigo2 = resource_path(os.path.join('Imagens', 'inimigo2.png'))
 
 # Carregar e escalar as imagens
 BackGround = pygame.image.load(caminho_background)
